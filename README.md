@@ -162,6 +162,26 @@ kubectl get svc -n longhorn-system
 ```
 # Optional - if you want to run Windows VM on ABM
 
+## Enable KubeVirt on the cluster
+```
+kubectl --kubeconfig bmctl-workspace/CLUSTER_NAME/CLUSTER_NAME-kubeconfig get pods -n kubevirt
+```
+Add following section if you- 
+```
+spec:
+  anthosBareMetalVersion: 1.8.3
+  kubevirt:
+    useEmulation: true
+  bypassPreflightCheck: false
+```
+Or following if your hardware permits. If you set **useEmulation: false** and your hardware doesn't support then pre-flight check will fail during cluster creation. 
+```
+spec:
+  anthosBareMetalVersion: 1.8.3
+  kubevirt:
+    useEmulation: false
+  bypassPreflightCheck: false
+```
 ## Download and save ISO image
 Download the Windows 2010 image from [here](https://www.microsoft.com/en-us/software-download/windows10ISO). 
 Upload the image to a GCS bucket so that you can download it on any machine later.
