@@ -240,3 +240,23 @@ kubectl get vm
 kubectl virt vnc [your-vm]
 ```
 You will need to install the Windows operating system.
+
+# Take Backup on GCP
+Create a GCP bucket, enable Interoperability. 
+Remove the default key and create a new one.
+Set the project as default project for interoperable access.
+
+Create K8s secret using following command for the key you just added. 
+```
+export ACCESS_KEY=<<your access key>
+export SECRET= <<your secret>>
+export ENDPOINT=https://storage.googleapis.com
+```
+Create the secret in **longhorn-system** namespace so that Longhorn can access this bucket using the GCS endpoint and key. 
+```
+kubectl create secret generic gcp-storage-secret \
+    --from-literal=AWS_ACCESS_KEY_ID=${ACCESS_KEY} \
+    --from-literal=AWS_SECRET_ACCESS_KEY=${SECRET} \
+    --from-literal=AWS_ENDPOINTS=${ENDPOINT} \
+    -n longhorn-system
+```
