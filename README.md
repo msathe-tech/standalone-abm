@@ -167,6 +167,14 @@ And then download the ISO image on the machine you want to run the kubectl.
 gsutil cp gs://[your gcs bucket]/Win10_21H1_English_x64.iso .
 ```
 
+**Note** if you have the GCS bucket in another project that you've access to then you can use 
+```
+gcloud auth login
+gcloud config set project[project-where-gcs-bucket-has-windows-image]
+gsutil cp gs://[your gcs bucket]/Win10_21H1_English_x64.iso .
+gcloud config set project[project-where-your-GCE-for-ABM-is-running]
+```
+
 
 # Setup Windows VM
 Install virtctl
