@@ -120,6 +120,13 @@ chmod +x login-token.sh
 ```
 Navigate to Anthos console, click the name of your server, on the right hand panel click *Login*, select the Bearer token option. Use the token above here and login to the cluster. 
 
+## Setup stackdriver monitoring and logging for workloads, enable Prometheus metrics capture for apps
+```
+kubectl patch stackdriver stackdriver --type=merge -p '{"spec":{"scalableMonitoring": false}}' -n kube-system
+kubectl patch stackdriver stackdriver --type=merge -p '{"spec":{"enableStackdriverForApplications": true}}' -n kube-system
+kubectl get po -n kube-system
+```
+
 # Done!
 **Congratulations!**
 You got a single machine Anthos cluster running on the simplest cloud. 
