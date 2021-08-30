@@ -219,11 +219,11 @@ Upload the ISO image.
 kubectl get sc
 
 kubectl virt image-upload \
---image-path=/absolute_path_to_windows_iso//Win10_20H2_v2_English_x64.iso \
+--image-path=/home/madhavhsathe/Win10_21H1_English_x64.iso \
 --pvc-name=windows-iso-pvc \
 --access-mode=ReadWriteOnce \
 --pvc-size=10G \
---uploadproxy-url=https://[cdi-uploadproxy svc IP]:443 \
+--uploadproxy-url=https://10.200.0.70:443 \
 --insecure  \
 --wait-secs=240 \
 --storage-class=longhorn
@@ -234,7 +234,8 @@ kubectl get pvc
 ## Lauch the VM
 ```
 cd kubevirt
-kubectl create -f windows-pvc.yaml
+# Edit the PVC YAML to change the size of the main disk as per your machine size. 
+kubectl create -f windows-pvc.yaml 
 kubectl create -f windows-vm.yaml
 ```
 Verify the PVC and VM are created
