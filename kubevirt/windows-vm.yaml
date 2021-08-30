@@ -1,0 +1,48 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  name: bds-nuc
+spec:
+  running: true
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: mlb-win-nuc
+    spec:
+      domain:
+        cpu:
+          cores: 8
+        devices:
+          disks:
+          - name: cdromiso
+            cdrom:
+              bus: sata
+            bootOrder: 1
+          - name: harddrive
+            disk:
+              bus: virtio
+          - name: virtio-container-disk
+            cdrom:
+              bus: sata
+          interfaces:
+          - name: default
+            masquerade: {}
+        machine:
+          type: q35
+        resources:
+          requests:
+            memory: 32G
+      networks:
+      - name: default
+        pod: {}
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: cdromiso
+        persistentVolumeClaim:
+          claimName: windows-iso-pvc
+      - name: harddrive
+        persistentVolumeClaim:
+          claimName: windows-main-disk
+      - containerDisk:
+          image: kubevirt/virtio-container-disk
+        name: virtio-container-disk
