@@ -39,8 +39,8 @@ grep -Eoc '(vmx|svm)' /proc/cpuinfo
 ```
 Check if your system can run hardware-accelerated KVM virtual machines. 
 ```
-sudo apt-get update && sudo apt-get upgrade
-sudo apt install cpu-checker
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt install cpu-checker -y
 kvm-ok
 ```
 Validate the processor virtualization capability is not disabled in the BIOS. The output should be like following. 
@@ -50,7 +50,7 @@ KVM acceleration can be used
 ```
 Setup your env, take a note of your IP address. 
 ```
-sudo apt install jq
+sudo apt install jq -y
 gcloud auth application-default login
 gcloud auth login
 chmod +x setenv.sh
