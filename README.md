@@ -73,6 +73,7 @@ chmod +x vxlan.sh
 ## Setup SSH access 
 Generate SSH keys for the user you are logged in with and give yourself a passwordless ssh access to the machine. 
 ```
+exit #exit from sudo
 ssh-keygen # don't enter any passphrase, use default file paths 
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 # verify you can login without password
