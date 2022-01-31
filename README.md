@@ -17,6 +17,10 @@ gcloud compute images create abmvirt-image --source-disk abmvirt-disk --source-d
 
 gcloud compute instances create abm-on-gce --zone=us-west1-a --image abmvirt-image --can-ip-forward --network default --tags http-server,https-server --min-cpu-platform "Intel Haswell" --scopes cloud-platform --machine-type n1-standard-32
 ```
+If you don't have a default VPC you can create one with following command 
+```
+gcloud compute networks create default --project=anthos-baremetal-poc --subnet-mode=auto --mtu=1460 --bgp-routing-mode=regional
+```
 ### Login to GCE 
 Login to GCE 
 ```
