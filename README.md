@@ -53,15 +53,20 @@ Setup your env, take a note of your IP address.
 sudo apt install jq -y
 gcloud auth application-default login
 gcloud auth login
+```
+Edit the setenv.sh in  and add your home directory to the PATH. 
+```
+cd standalone-abm
 chmod +x setenv.sh
-. ./standalone-abm/setenv.sh
+. ./setenv.sh
 ```
 ## Setup VXLAN on the GCE instance
 
 ```
 cd ~
 bash sudo
-standalone-abm/vxlan.sh
+cd standalone-abm
+./vxlan.sh
 ```
 
 ## Setup SSH access 
