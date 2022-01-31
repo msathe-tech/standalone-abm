@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo bash
+#sudo bash
 apt-get -qq update > /dev/null
 apt-get -qq install -y jq > /dev/null
 set -x
