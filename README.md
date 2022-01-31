@@ -66,6 +66,7 @@ chmod +x setenv.sh
 cd ~
 sudo bash
 cd standalone-abm
+chmod +x vxlan.sh
 ./vxlan.sh
 ```
 
