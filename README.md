@@ -78,6 +78,7 @@ ssh-keygen # don't enter any passphrase, use default file paths
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 # verify you can login without password
 ssh [your-username]@[ip address of your machine] # you can find it from setenv.sh script
+exit #exit from ssh
 ```
 Now, generate SSH keys for root. 
 ```
