@@ -87,6 +87,7 @@ ssh-keygen # don't enter any passphrase, use default file paths
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 # verify you can login without password
 ssh root@[ip address of your machine] # you can find it from setenv.sh script
+exit #exit from ssh
 ```
 
 ## Install Docker and make it available as non-root user 
