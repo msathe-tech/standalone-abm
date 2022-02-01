@@ -48,6 +48,7 @@ Validate the processor virtualization capability is not disabled in the BIOS. Th
 INFO: /dev/kvm exists
 KVM acceleration can be used
 ```
+# Setup your environment
 Setup your env, take a note of your IP address. 
 ```
 sudo apt install jq -y
