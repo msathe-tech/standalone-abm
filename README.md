@@ -59,6 +59,7 @@ Get the correct network interafce and use the one that shows your IP.
 ```
 ip a
 ```
+**IMP You are going to need the network interface name to change it in the setenv.sh.**
 Edit the setenv.sh in  and add your home directory to the PATH. 
 ```
 cd standalone-abm
