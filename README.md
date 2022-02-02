@@ -55,6 +55,10 @@ sudo apt install jq -y
 gcloud auth application-default login
 gcloud auth login
 ```
+Get the correct network interafce and use the one that shows your IP. 
+```
+ip a
+```
 Edit the setenv.sh in  and add your home directory to the PATH. 
 ```
 cd standalone-abm
