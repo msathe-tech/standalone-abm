@@ -4,8 +4,10 @@
 apt-get -qq update > /dev/null
 apt-get -qq install -y jq > /dev/null
 set -x
-ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0
-export CURRENT_IP=$(ip --json a show dev ens4 | jq '.[0].addr_info[0].local' -r)
+export NETWORK_INTERFACE=eno1
+ip link add vxlan0 type vxlan id 42 dev ${NETWORK_INTERFACE} dstport 0
+export CURRENT_IP=$(ip --json a show dev ${NETWORK_INTERFACE} | jq '.[0].addr_info[0].local' -r)
+
 echo "VM IP address is: $CURRENT_IP"
 bridge fdb append to 00:00:00:00:00:00 dst $CURRENT_IP dev vxlan0
 
