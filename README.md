@@ -67,7 +67,7 @@ chmod +x setenv.sh
 . ./setenv.sh
 ```
 ## Setup VXLAN on the GCE instance
-
+Edit the vxlan script to change the value of **NETWORK_INTERFACE**
 ```
 cd ~
 sudo bash
