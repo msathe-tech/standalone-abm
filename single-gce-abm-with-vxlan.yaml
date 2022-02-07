@@ -17,7 +17,7 @@ metadata:
 apiVersion: baremetal.cluster.gke.io/v1
 kind: Cluster
 metadata:
-  name: gce1-abm-cluster
+  name: abm-cluster
   namespace: cluster-gce1-abm-cluster
 spec:
   # Cluster type. This can be:
