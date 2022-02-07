@@ -172,38 +172,6 @@ remote: Total 63 (delta 31), reused 26 (delta 6), pack-reused 0
 Unpacking objects: 100% (63/63), 18.80 KiB | 1013.00 KiB/s, done.
 ```
 
-**NOTE**: Move this to the bottom
-## **OPTIONAL** Verify CPU support for hardware virtualization
-
-If you wish to run legacy windows apps on the platform you will require KubeVirt which uses KVM to manage VMs on top of Kubernetes. Ensure you have ability to run KVM. 
-
-1. Following command checks if the CPU supports harware virtualization. If following command output it 0 it means the CPU doesn't support hardware virtualization. Which means you can run KubeVirt VMs on the ABM.
-
-```
-$ grep -Eoc '(vmx|svm)' /proc/cpuinfo
-```
-
-For the `abm-on-gce` instace, here is the output, since this is a non-zero value, that means that there are X number processors running on this instance.
-```
-64
-```
-NOTE: This was a 0 value in Argolis, and Hardware Virtualization is not support
-
-2. Next, install the necessary dependencies and updates for KVM. 
-
-```
-$ sudo apt-get update && sudo apt-get upgrade -y
-$ sudo apt install cpu-checker -y
-```
-
-3. Finally, check if your system can run hardware-accelerated KVM virtual machines and the output will look something like this:
-
-```
-$ kvm-ok
-INFO: /dev/kvm exists
-KVM acceleration can be used
-```
-
 ## III: Continue the configuration of the GCE instance to prep for ABM Install
 
 1. Setup the GCE environment and install the necessary updates and jq binaries
