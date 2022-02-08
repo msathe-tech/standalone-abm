@@ -18,7 +18,6 @@ Install and create a compute GCE disk with a custom image.
 
 5. Please update your preferred region and zone through: `gcloud config set compute/zone [myRegion]`. **NOTE** Change `[myRegion]`. For instance, `us-central-a` is the region of our choice. 
 
-Enable the following APIs
 6. Next, Enable the API [compute.googleapis.com] on your project through `gcloud services eanble compute.googleapis.com`.
 
 
