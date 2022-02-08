@@ -65,7 +65,7 @@ STATUS: READY
 3. Before proceeding to create your GCE instance, ensure you have a VPC network. For this workshop, please create a default network through the following command. **NOTE**: Please replace `myProject` with your project ID.
 
 ```
-gcloud compute networks create default --project=[myProject] --subnet-mode=auto --mtu=1460 --bgp-routing-mode=regional
+gcloud compute networks create default --subnet-mode=auto --mtu=1460 --bgp-routing-mode=regional
 ```
 
 Output should look like something similar:
