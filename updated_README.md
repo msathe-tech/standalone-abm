@@ -197,15 +197,21 @@ chmod +x setenv.sh
 
 4. Edit the `setenv.sh` script to your current home path. 
 
-Please update Line 6 with your assigned Argolis principal name. For instance, if your id is: `ubuntu@anjalikhatri.altostrat.com` the value will be `ubuntu`.
+Run the command `ip a` and make a note of your network interface name, it should be similar to `ens4` or `ens1`, etc. 
+
+Please update Line 4 with your network interface name.
+Please update Line 7 with your assigned Argolis principal name. For instance, if your id is: `ubuntu@anjalikhatri.altostrat.com` the value will be `ubuntu`.
+Pleave validate Line 8 domain name. For this workshop, since it is running on Argolis, this value should not change.
 ```
 #!/bin/bash
 # IMP: Please change the ens4 to use correct network interface name in the following command.
 # It should be the interface which has your IP on the subnet.
-export CURRENT_IP=$(ip --json a show dev ens4 | jq '.[0].addr_info[0].local' -r)
+export NETWORK_INTERFACE=ens4 ### Replace this value by running and identifying your interface through `ip a`
+export CURRENT_IP=$(ip --json a show dev ${NETWORK_INTERFACE} | jq '.[0].addr_info[0].local' -r)
 echo INSTANCE_IP=$CURRENT_IP
 export ARGOLIS_NAME=ubuntu  ###Replace this value with your Argolis name
-export GCE_CLUSTER_PATH=${ARGOLIS_NAME}_anjalikhatri_altostrat_co
+export ARGOLIS_DOMAIN=anjalikhatri_altostrat_co ### Replace with your domain name.
+export GCE_CLUSTER_PATH=${ARGOLIS_NAME}_${ARGOLIS_DOMAIN}
 echo USERNAME=$GCE_CLUSTER_PATH
 export PATH=$PATH:/home/$GCE_CLUSTER_PATH
 export GOOGLE_APPLICATION_CREDENTIALS=$HOME/.config/gcloud/application_default_credentials.json
@@ -240,8 +246,6 @@ sudo bash
 cd standalone-abm
 chmod +x vxlan.sh
 ```
-
-4. Run the command `ip a` and make a note of your network interface and use the one that shows for your IP address. 
 
 5. Update line 7 within the `vxlan.sh` script with the network interface name. 
 In my instance, it should be `ens4` instead of `eno1`.
@@ -420,9 +424,9 @@ I0205 00:34:15.161963  104440 request.go:655] Throttling request took 1.63686645
 [2022-02-05 00:35:58+0000] Deleting bootstrap cluster... OK
 ```
 
-2. Go back to the `setenv.sh` script and uncomment lines 15 and 16 and update the parameters for project ID and cluster name.
+2. Go back to the `setenv.sh` script and uncomment lines 17 and 18 and validate the environment variables for project ID and cluster name are correct.
 
-It should look something like this:
+Uncomment the lines that should look like this:
 ```
 export KUBECONFIG=/home/${GCE_CLUSTER_PATH}/bmctl-workspace/${CLUSTER_NAME}/${CLUSTER_NAME}-kubeconfig
 echo $KUBECONFIG
@@ -430,7 +434,7 @@ echo $KUBECONFIG
 
 ### F: Login to Anthos console
 
-1. Now that Anthos is installed, you need to update your $PATH to specify the newly generated Kube Config file for ABM cluster. Execute these steps in both `non-root` and `root` user.
+1. Now that Anthos is installed, you need to update your $PATH to specify the newly generated Kube Config file for the newly created ABM cluster. Execute these steps as both `non-root` and `root` users.
 
 ```
 mkdir -p $HOME/.kube
