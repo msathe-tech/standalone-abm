@@ -16,7 +16,10 @@ Install and create a compute GCE disk with a custom image.
 
 4. Once your account is set, set the `project` property through `gcloud config set project [myProject]`. **NOTE** Change `[myProject]` and use your designated project ID instead of the project NAME.
 
-5. Please update your preferred region and zone through: `gcloud config set compute/zone [myRegion]`. **NOTE** Change `[myRegion]`. For instance, `us-central-a` is the region of our choice. Next, Enable the API [compute.googleapis.com] on your project.
+5. Please update your preferred region and zone through: `gcloud config set compute/zone [myRegion]`. **NOTE** Change `[myRegion]`. For instance, `us-central-a` is the region of our choice. 
+
+Enable the following APIs
+6. Next, Enable the API [compute.googleapis.com] on your project through `gcloud services eanble compute.googleapis.com`.
 
 
 ## I. Create a GCE instance using custom image
@@ -75,7 +78,6 @@ SUBNET_MODE: AUTO
 BGP_ROUTING_MODE: REGIONAL
 IPV4_RANGE:
 GATEWAY_IPV4:
-...
 ```
 
 3. Create a firewall rule on the `default` vpc network to allow the following TCP ports of: 22, 3389, 443 and PING.
