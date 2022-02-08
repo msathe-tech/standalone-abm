@@ -14,7 +14,7 @@ Install and create a compute GCE disk with a custom image.
 3. **OPTIONAL**: Allow your GCP project to be authenticated. If you are using Cloud Shell, this step can be skipped. Please run 
 `$ gcloud auth login` to obtain new credentials. Or if you have already logged in with a different account use `$ gcloud config set account ACCOUNT` to select an already authenticated account to use.
 
-4. Once your account is set, set the `project` property through `gcloud config set project [myProject]`. **NOTE** Change `[myProject] and use your designated project ID instead of the project NAME.
+4. Once your account is set, set the `project` property through `gcloud config set project [myProject]`. **NOTE** Change `[myProject]` and use your designated project ID instead of the project NAME.
 
 5. Please update your preferred region and zone through: `gcloud config set compute/zone [myRegion]`. **NOTE** Change `[myRegion]`. For instance, `us-central-a` is the region of our choice. Next, Enable the API [compute.googleapis.com] on your project.
 
@@ -26,7 +26,7 @@ These steps will first create a SSD persistent disk storage and its associated i
 1. Run the following command to create a storage disk with 200 GB disk size with a PD-SSD disk type: 
 
 ```
-$ gcloud compute disks create abmvirt-disk --image-project=ubuntu-os-cloud --image-family=ubuntu-2004-lts --size=200G --type=pd-ssd
+gcloud compute disks create abmvirt-disk --image-project=ubuntu-os-cloud --image-family=ubuntu-2004-lts --size=200G --type=pd-ssd
 ```
 
 Once deployed, the output should look similar to this:
@@ -46,7 +46,7 @@ STATUS: READY
 2. Next, create a compute image against the newly created storage disk:
 
 ```
-$ gcloud compute images create abmvirt-image --source-disk abmvirt-disk --licenses "https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"
+gcloud compute images create abmvirt-image --source-disk abmvirt-disk --licenses "https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"
 ```
 
 Once deployed, the output should look similar to this:
@@ -63,7 +63,7 @@ STATUS: READY
 3. Before proceeding to create your GCE instance, ensure you have a VPC network. For this workshop, please create a default network through the following command. **NOTE**: Please replace `myProject` with your project ID.
 
 ```
-$ gcloud compute networks create default --project=[myProject] --subnet-mode=auto --mtu=1460 --bgp-routing-mode=regional
+gcloud compute networks create default --project=[myProject] --subnet-mode=auto --mtu=1460 --bgp-routing-mode=regional
 ```
 
 Output should look like something similar:
@@ -81,7 +81,7 @@ GATEWAY_IPV4:
 3. Create a firewall rule on the `default` vpc network to allow the following TCP ports of: 22, 3389, 443 and PING.
 
 ```
-$ gcloud compute firewall-rules create custom-allow-ssh --network default --allow tcp:22,tcp:3389,tcp:443,tcp:8080,icmp
+gcloud compute firewall-rules create custom-allow-ssh --network default --allow tcp:22,tcp:3389,tcp:443,tcp:8080,icmp
 ```
 
 Output should look like something similar:
@@ -101,7 +101,7 @@ DISABLED: False
 4. Finally, create the GCE instance and attach the storage disk from the above steps:  
 
 ```
-$ gcloud compute instances create abm-on-gce --image abmvirt-image --can-ip-forward --network default --tags http-server,https-server --min-cpu-platform "Intel Haswell" --scopes cloud-platform --machine-type n1-standard-32
+gcloud compute instances create abm-on-gce --image abmvirt-image --can-ip-forward --network default --tags http-server,https-server --min-cpu-platform "Intel Haswell" --scopes cloud-platform --machine-type n1-standard-32
 ```
 
 Once deployed, the output should look similar to this: 
@@ -124,7 +124,7 @@ When your GCE instance is up and running, you will see there are two disk types 
 1. SSH into the newly created GCE instance
 
 ```
-$ gcloud compute ssh abm-on-gce
+gcloud compute ssh abm-on-gce
 ```
 
 If a public/private key for SSH does not exist for gcloud, go ahead and generate one. You can keep the passphrase as empty.
@@ -158,7 +158,7 @@ anjalikhatri@abm-on-gce:-$
 2. Clone the following GIT repository and get started with setting up Anthos Bare Metal. 
 
 ```
-$ git clone https://github.com/msathe-tech/standalone-abm.git
+git clone https://github.com/msathe-tech/standalone-abm.git
 ```
 
 Output will look something like this:
@@ -177,22 +177,22 @@ Unpacking objects: 100% (63/63), 18.80 KiB | 1013.00 KiB/s, done.
 1. Setup the GCE environment and install the necessary updates and jq binaries
 
 ```
-$ sudo apt-get update -y
-$ sudo apt install jq -y
+sudo apt-get update -y
+sudo apt install jq -y
 ```
 
 2. Authentication your gcloud for login against your user profile and project ID.
 
 ```
-$ gcloud auth application-default login
-$ gcloud auth login
+gcloud auth application-default login
+gcloud auth login
 ```
 
 3. Update access permissions for the following set environment script and make a note of your IP address:
 
 ```
-$ cd standalone-abm
-$ chmod +x setenv.sh
+cd standalone-abm
+chmod +x setenv.sh
 ```
 
 4. Edit the `setenv.sh` script to your current home path. 
@@ -220,7 +220,7 @@ echo PROJECT_ID=$PROJECT_ID
 5. Run the script
 
 ```
-$ . ./setenv.sh
+. ./setenv.sh
 ```
 
 The output should look similar to the following:
@@ -235,10 +235,10 @@ PROJECT_ID=helloworld-001-340616
 6. Next, setup the VXLAN on the GCE instance. To get started, chmod permissions on the vxlan script, logged in as root.
 
 ```
-$ cd ~
-$ sudo bash
-$ cd standalone-abm
-$ chmod +x vxlan.sh
+cd ~
+sudo bash
+cd standalone-abm
+chmod +x vxlan.sh
 ```
 
 4. Run the command `ip a` and make a note of your network interface and use the one that shows for your IP address. 
@@ -249,7 +249,7 @@ In my instance, it should be `ens4` instead of `eno1`.
 6. Next, run the script and ensure you get a successful ping against the vxlan IP of 10.200.0.2. A successful ping confirms your vxlan setup is complete.
 
 ```
-$ ./vxlan.sh
+./vxlan.sh
 ```
 
 Output should look like something similar:
@@ -269,15 +269,15 @@ rtt min/avg/max/mdev = 0.021/0.037/0.055/0.004 ms
 
 1. Exit from `root` user
 ```
-$ exit 
+exit 
 ```
 
 2. Generate RSA Keygen. Don't enter any passphrase (leave empty) and use the default file paths.
 Perform this setp for BOTH non-root AND root user.
 
 ```
-$ ssh-keygen 
-$ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+ssh-keygen 
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ```
 
 Verify you can login without password, you can find the IP address and username from `setenv.sh` script from seciton III, step 5. 
@@ -285,8 +285,8 @@ For instance, it should be like `ssh ubuntu_anjalikhatri_altostrat_co@10.128.0.2
 For instance, it should be like `ssh root@10.128.0.2` for root user.
 
 ```
-$ ssh [your-username]@[ip-address-of-your-machine] 
-$ exit 
+ssh [your-username]@[ip-address-of-your-machine] 
+exit 
 ```
 
 ### B: Install Docker and make it available as non-root user
@@ -294,22 +294,22 @@ $ exit
 1. Install docker on GCE
 
 ```
-$ sudo apt-get install -y docker
-$ sudo apt-get install -y docker.io
+sudo apt-get install -y docker
+sudo apt-get install -y docker.io
 ```
 
 2. Add docker to a group and existing user profile
 
 ```
-$ sudo groupadd dockerdock
-$ sudo usermod -aG docker $USER
+sudo groupadd dockerdock
+sudo usermod -aG docker $USER
 ```
 
 3. Confirm docker is running and its latest version
 
 ```
-$ newgrp docker 
-$ docker run hello-world
+newgrp docker 
+docker run hello-world
 ```
 
 4. Validate the version of Docker:
@@ -323,9 +323,9 @@ Docker version 20.10.7, build 20.10.7-0ubuntu5~20.04.2
 1. Install and setup the BMCTL 
 
 ```
-$ cd ~
-$ gsutil cp gs://anthos-baremetal-release/bmctl/1.8.2/linux-amd64/bmctl bmctl
-$ chmod a+x bmctl
+cd ~
+gsutil cp gs://anthos-baremetal-release/bmctl/1.8.2/linux-amd64/bmctl bmctl
+chmod a+x bmctl
 ```
 
 ### D: Create the ABM Cluster Configuration file
@@ -344,13 +344,13 @@ GCE_CLUSTER_PATH=${ARGOLIS_NAME}_anjalikhatri_altostrat_co
 **Can Skip, since this was done earlier**
 2. Ensure you've enabled auth for your GCP service by following the steps here
 ```
-$ gcloud auth login --update-adc
+gcloud auth login --update-adc
 ```
 
 2. Create the ABM configuration
 ```
-$ cd $HOME
-$ ./bmctl create config -c $CLUSTER_NAME --enable-apis --create-service-accounts --project-id=$PROJECT_ID
+cd $HOME
+./bmctl create config -c $CLUSTER_NAME --enable-apis --create-service-accounts --project-id=$PROJECT_ID
 ```
 ls
 Output should look similar to this:
@@ -387,7 +387,7 @@ gcloud auth application-default login
 
 Output for the cluster creation should look like this
 ```
-# ./bmctl create cluster -c abm-cluster
+$ ./bmctl create cluster -c abm-cluster
 Please check the logs at bmctl-workspace/abm-cluster/log/create-cluster-20220205-002259/create-cluster.log
 [2022-02-05 00:23:09+0000] Creating bootstrap cluster... OK
 [2022-02-05 00:24:23+0000] Installing dependency components... OK
@@ -468,6 +468,11 @@ stackdriver.addons.sigs.k8s.io/stackdriver patched
 
 ```
 $ kubectl get po -n kube-system
+```
+
+The output will look something similar
+
+```
 NAME                                                        READY   STATUS        RESTARTS   AGE
 anet-operator-57cb7b979b-77qt7                              1/1     Running       0          33m
 anetd-bxv44                                                 1/1     Running       0          33m
