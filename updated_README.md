@@ -16,7 +16,7 @@ Install and create a compute GCE disk with a custom image.
 
 4. Once your account is set, set the `project` property through `gcloud config set project [myProject]`. **NOTE** Change `[myProject]` and use your designated project ID instead of the project NAME.
 
-5. Please update your preferred region and zone through: `gcloud config set compute/zone [myRegion]`. **NOTE** Change `[myRegion]`. For instance, `us-central-a` is the region of our choice. 
+5. Please update your preferred region and zone through: `gcloud config set compute/zone [myRegion]`. **NOTE** Change `[myRegion]`. For instance, `us-central1-a` is the region of our choice. 
 
 6. Next, Enable the API [compute.googleapis.com] on your project through `gcloud services eanble compute.googleapis.com`.
 
