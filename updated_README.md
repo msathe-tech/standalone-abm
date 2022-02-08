@@ -122,7 +122,7 @@ When your GCE instance is up and running, you will see there are two disk types 
 
 ## II: Login to the newly created GCE Instance
 
-1. SSH into the newly created GCE instance
+1. SSH into the newly created GCE instance. Please wait a few minutes and validate the GCE instance is up before trying this step.
 
 ```
 gcloud compute ssh abm-on-gce
