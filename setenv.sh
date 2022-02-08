@@ -1,7 +1,8 @@
 #!/bin/bash
 # IMP: Please change the ens4 to use correct network interface name in the following command.
 # It should be the interface which has your IP on the subnet.
-export CURRENT_IP=$(ip --json a show dev ens4 | jq '.[0].addr_info[0].local' -r)
+export NETWORK_INTERFACE=ens4 #replace this
+export CURRENT_IP=$(ip --json a show dev ${NETWORK_INTERFACE} | jq '.[0].addr_info[0].local' -r)
 echo INSTANCE_IP=$CURRENT_IP
 export ARGOLIS_NAME=ubuntu  ###Replace this value with your Argolis name
 export GCE_CLUSTER_PATH=${ARGOLIS_NAME}_anjalikhatri_altostrat_co
