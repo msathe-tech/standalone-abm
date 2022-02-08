@@ -79,7 +79,7 @@ IPV4_RANGE:
 GATEWAY_IPV4:
 ```
 
-3. Create a firewall rule on the `default` vpc network to allow the following TCP ports of: 22, 3389, 443 and PING.
+4. Create a firewall rule on the `default` vpc network to allow the following TCP ports of: 22, 3389, 443 and PING.
 
 ```
 gcloud compute firewall-rules create custom-allow-ssh --network default --allow tcp:22,tcp:3389,tcp:443,tcp:8080,icmp
@@ -99,7 +99,7 @@ DENY:
 DISABLED: False
 ```
 
-4. Finally, create the GCE instance and attach the storage disk from the above steps:  
+5. Finally, create the GCE instance and attach the storage disk from the above steps:  
 
 ```
 gcloud compute instances create abm-on-gce --image abmvirt-image --can-ip-forward --network default --tags http-server,https-server --min-cpu-platform "Intel Haswell" --scopes cloud-platform --machine-type n1-standard-32
