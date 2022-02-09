@@ -14,12 +14,11 @@ Install and create a compute GCE disk with a custom image.
 3. **OPTIONAL**: Allow your GCP project to be authenticated. If you are using Cloud Shell, this step can be skipped. Please run 
 `$ gcloud auth login` to obtain new credentials. Or if you have already logged in with a different account use `$ gcloud config set account ACCOUNT` to select an already authenticated account to use.
 
-4. Once your account is set, set the `project` property through `gcloud config set project [myProject]`. **NOTE** Change `[myProject]` and use your designated project ID instead of the project NAME.
+4. Once your account is set, set the `project` property through `gcloud config set project [myProject]`. **NOTE** Change `[myProject]` and use your designated project ID, do not use the project NAME.
 
-5. Please update your preferred region and zone through: `gcloud config set compute/zone [myRegion]`. **NOTE** Change `[myRegion]`. For instance, `us-central1-a` is the region of our choice. 
+5. If prompted, enable the API [compute.googleapis.com] on your project or use the following command `gcloud services eanble compute.googleapis.com`.
 
-6. Next, Enable the API [compute.googleapis.com] on your project through `gcloud services eanble compute.googleapis.com`.
-
+6. Please update your preferred region and zone through: `gcloud config set compute/zone [myRegion]`. **NOTE** Change `[myRegion]`. For instance, `us-central1-a` is the region of our choice. 
 
 ## I. Create a GCE instance using custom image
 
@@ -62,7 +61,7 @@ DEPRECATED:
 STATUS: READY
 ```
 
-3. Before proceeding to create your GCE instance, ensure you have a VPC network. For this workshop, please create a default network through the following command. **NOTE**: Please replace `myProject` with your project ID.
+3. Before proceeding to create your GCE instance, ensure you have a VPC network. For this workshop, please create a default network through the following command. 
 
 ```
 gcloud compute networks create default --subnet-mode=auto --mtu=1460 --bgp-routing-mode=regional
@@ -122,7 +121,7 @@ When your GCE instance is up and running, you will see there are two disk types 
 
 ## II: Login to the newly created GCE Instance
 
-1. SSH into the newly created GCE instance. Please wait a few minutes and validate the GCE instance is up before trying this step.
+1. SSH into the newly created GCE instance. If you run into an error saying the connection to host was refused, please wait a few minutes and validate the GCE instance is up before trying this step. 
 
 ```
 gcloud compute ssh abm-on-gce
