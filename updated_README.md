@@ -198,7 +198,7 @@ chmod +x setenv.sh
 
 Run the command `ip a` and make a note of your network interface name, it should be `ens4`. If it is NOT `ens4`, please update Line 4 with your network interface name.
 
-Please update Line 7 with your assigned Argolis principal name. For instance, if your id is: `ubuntu@anjalikhatri.altostrat.com` the value will be `ubuntu`.
+Please update Line 7 with your assigned Argolis principal name. For instance, if your user id is: `anjali@anjalikhatri.altostrat.com` the value will be `anjali`.
 Pleave validate Line 8 domain name. For this workshop, since it is running on Argolis, this value should not change.
 ```
 #!/bin/bash
@@ -207,7 +207,7 @@ Pleave validate Line 8 domain name. For this workshop, since it is running on Ar
 export NETWORK_INTERFACE=ens4 ### Replace this value by running and identifying your interface through `ip a`
 export CURRENT_IP=$(ip --json a show dev ${NETWORK_INTERFACE} | jq '.[0].addr_info[0].local' -r)
 echo INSTANCE_IP=$CURRENT_IP
-export ARGOLIS_NAME=ubuntu  ###Replace this value with your Argolis name
+export ARGOLIS_NAME=anjali  ###Replace this value with your Argolis name
 export ARGOLIS_DOMAIN=anjalikhatri_altostrat_co ### Replace with your domain name.
 export GCE_CLUSTER_PATH=${ARGOLIS_NAME}_${ARGOLIS_DOMAIN}
 echo USERNAME=$GCE_CLUSTER_PATH
