@@ -185,7 +185,6 @@ sudo apt install jq -y
 
 ```
 gcloud auth application-default login
-gcloud auth login
 ```
 
 3. Update access permissions for the following set environment script and make a note of your IP address:
@@ -195,11 +194,10 @@ cd standalone-abm
 chmod +x setenv.sh
 ```
 
-4. Edit the `setenv.sh` script to your current home path. 
+4. Update the `setenv.sh` script for the following values.
 
-Run the command `ip a` and make a note of your network interface name, it should be similar to `ens4` or `ens1`, etc. 
+Run the command `ip a` and make a note of your network interface name, it should be `ens4`. If it is NOT `ens4`, please update Line 4 with your network interface name.
 
-Please update Line 4 with your network interface name.
 Please update Line 7 with your assigned Argolis principal name. For instance, if your id is: `ubuntu@anjalikhatri.altostrat.com` the value will be `ubuntu`.
 Pleave validate Line 8 domain name. For this workshop, since it is running on Argolis, this value should not change.
 ```
@@ -247,10 +245,10 @@ cd standalone-abm
 chmod +x vxlan.sh
 ```
 
-5. Update line 7 within the `vxlan.sh` script with the network interface name. 
+7. Update line 7 within the `vxlan.sh` script with the network interface name. 
 In my instance, it should be `ens4` instead of `eno1`.
 
-6. Next, run the script and ensure you get a successful ping against the vxlan IP of 10.200.0.2. A successful ping confirms your vxlan setup is complete.
+8. Next, run the script and ensure you get a successful ping against the vxlan IP of 10.200.0.2. A successful ping confirms your vxlan setup is complete.
 
 ```
 ./vxlan.sh
@@ -269,15 +267,17 @@ Output should look like something similar:
 rtt min/avg/max/mdev = 0.021/0.037/0.055/0.004 ms
 ```
 
+Step the ping output by running Ctrl-Z (on Mac).
+
 ### A: Setup SSH Access for GCE NON-ROOT and ROOT users and enable passwordless SSH private access to your machine.
 
-1. Exit from `root` user
+1. Exit from `root` user and ensure you're on `non-root` 
 ```
 exit 
 ```
 
-2. Generate RSA Keygen. Don't enter any passphrase (leave empty) and use the default file paths.
-Perform this setp for NON-ROOT user.
+2. Generate RSA Keygen. Don't enter any passphrase (leave empty) and use the default file paths (Keep pressing enter).
+Perform this step for NON-ROOT user.
 
 ```
 ssh-keygen 
@@ -293,7 +293,7 @@ ssh [your-username]@[ip-address-of-your-machine]
 exit 
 ```
 
-3. Generate RSA Keygen. Don't enter any passphrase (leave empty) and use the default file paths.
+3. Generate RSA Keygen. Don't enter any passphrase (leave empty) and use the default file paths (Keep pressing enter).
 Perform this setp for ROOT user.
 
 ```
@@ -309,6 +309,7 @@ For instance, it should be like `ssh root@10.128.0.2` for root user.
 ```
 ssh [your-username]@[ip-address-of-your-machine] 
 exit 
+exit
 ```
 
 ### B: Install Docker and make it available as non-root user
@@ -336,9 +337,9 @@ docker run hello-world
 
 4. Validate the version of Docker:
 ```
-$ docker -v
-Docker version 20.10.7, build 20.10.7-0ubuntu5~20.04.2
+docker -v
 ```
+Docker version 20.10.7, build 20.10.7-0ubuntu5~20.04.2
 
 ### C: Setup the CTL for ABM
 
@@ -352,21 +353,29 @@ chmod a+x bmctl
 
 ### D: Create the ABM Cluster Configuration file
 
-1. Set the following environment variable for your exisitng project ID, ABM cluster name. 
-
-   **NOTE**: Change the name in accordance to your project ID.
+1. Validate the following environment variable output matches your current environment. These values were set in `setenv.sh` script earlier. 
 
 ```
-ARGOLIS_NAME=ubuntu ###Replace this value with your argolis user.
-PROJECT_ID=$(gcloud config get-value project)
-CLUSTER_NAME=abm-cluster
-GCE_CLUSTER_PATH=${ARGOLIS_NAME}_anjalikhatri_altostrat_co
+echo $ARGOLIS_NAME
+echo $PROJECT_ID
+echo $CLUSTER_NAME
+echo $GCE_CLUSTER_PATH
 ```
 
-**Can Skip, since this was done earlier**
-2. Ensure you've enabled auth for your GCP service by following the steps here
+Output should be similar BUT validate this matches your environment
+
 ```
-gcloud auth login --update-adc
+$ echo $ARGOLIS_NAME
+ubuntu
+
+$ echo $PROJECT_ID
+helloworld-010
+
+$ echo $CLUSTER_NAME
+abm-cluster
+
+$ echo $GCE_CLUSTER_PATH
+ubuntu_anjalikhatri_altostrat_co
 ```
 
 2. Create the ABM configuration
@@ -409,8 +418,6 @@ Oringinal file looks like this
 102    projectID: [PROJECT-ID]
 ```
 
-Update line 34 
-
 Update 
 ### E. Create ABM Cluster
 
@@ -418,6 +425,7 @@ Update
 
 ```
 sudo bash
+cd ../..
 gcloud auth application-default login
 . ./standalone-abm/setenv.sh
 ./bmctl create cluster -c abm-cluster
@@ -502,7 +510,7 @@ $ kubectl patch stackdriver stackdriver --type=merge -p '{"spec":{"enableStackdr
 stackdriver.addons.sigs.k8s.io/stackdriver patched
 ```
 
-4. Get a status of the running pods 
+5. Get a status of the running pods 
 
 ```
 $ kubectl get po -n kube-system
