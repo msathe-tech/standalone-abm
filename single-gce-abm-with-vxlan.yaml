@@ -3,11 +3,11 @@
 # create the initial admin/hybrid cluster. Afterwards, when creating user clusters by directly
 # applying the cluster and node pool resources to the existing cluster, you must remove this
 # section.
-gcrKeyPath: bmctl-workspace/.sa-keys/abm-on-gcctdemo-anthos-baremetal-gcr.json
+gcrKeyPath: bmctl-workspace/.sa-keys/[PROJECT-ID]-anthos-baremetal-gcr.json
 sshPrivateKeyPath: /root/.ssh/id_rsa #<path to SSH private key, used for node access>
-gkeConnectAgentServiceAccountKeyPath: bmctl-workspace/.sa-keys/abm-on-gcctdemo-anthos-baremetal-connect.json
-gkeConnectRegisterServiceAccountKeyPath: bmctl-workspace/.sa-keys/abm-on-gcctdemo-anthos-baremetal-register.json
-cloudOperationsServiceAccountKeyPath: bmctl-workspace/.sa-keys/abm-on-gcctdemo-anthos-baremetal-cloud-ops.json
+gkeConnectAgentServiceAccountKeyPath: bmctl-workspace/.sa-keys/[PROJECT-ID]-anthos-baremetal-connect.json
+gkeConnectRegisterServiceAccountKeyPath: bmctl-workspace/.sa-keys/[PROJECT-ID]-anthos-baremetal-register.json
+cloudOperationsServiceAccountKeyPath: bmctl-workspace/.sa-keys/[PROJECT-ID]-anthos-baremetal-cloud-ops.json
 ---
 apiVersion: v1
 kind: Namespace
@@ -31,7 +31,7 @@ spec:
   anthosBareMetalVersion: 1.8.2
   # GKE connect configuration
   gkeConnect:
-    projectID: abm-on-gcctdemo
+    projectID: [PROJECT-ID]
   # Control plane configuration
   controlPlane:
     nodePoolSpec:
@@ -99,7 +99,7 @@ spec:
   # Logging and Monitoring
   clusterOperations:
     # Cloud project for logs and metrics.
-    projectID: abm-on-gcctdemo
+    projectID: [PROJECT-ID]
     # Cloud location for logs and metrics.
     location: us-central1
     # Enable Cloud Audit Logging if uncommented and set to false.
