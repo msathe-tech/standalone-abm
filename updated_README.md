@@ -378,6 +378,11 @@ $ echo $GCE_CLUSTER_PATH
 ubuntu_anjalikhatri_altostrat_co
 ```
 
+If the environment variables are incorrect, please re-run the `setenv.sh` script as the following and re-validate your output by running the echo commands
+```
+. ./standalone-abm/setenv.sh
+```
+
 2. Create the ABM configuration
 ```
 cd $HOME
