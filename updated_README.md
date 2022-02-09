@@ -423,7 +423,12 @@ Oringinal file looks like this
 102    projectID: [PROJECT-ID]
 ```
 
-Update 
+To easily update the project-IDs, run the following sed command. Replace `helloworld-009` with your actual project-ID
+
+```
+sed -i 's/\[PROJECT-ID\]/helloworld-009/g' bmctl-workspace/$CLUSTER_NAME/$CLUSTER_NAME.yaml
+```
+
 ### E. Create ABM Cluster
 
 1. Follow the steps below to create your ABM cluster
