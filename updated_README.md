@@ -377,8 +377,24 @@ $ ./bmctl create config -c $CLUSTER_NAME --enable-apis --create-service-accounts
 cp standalone-abm/single-gce-abm-with-vxlan.yaml bmctl-workspace/$CLUSTER_NAME/$CLUSTER_NAME.yaml
 ```
 
-4. Open up the 
+4. Open up the `$CLUSTER_NAME.yaml` file and update the following. In this case, it will be called `abm-cluster.yaml` and update the following lines:
 
+Update Lines 6,7,8,9,10, 34 and 102 by replacing the [PROJECT-ID] with YOUR assigned ID, remove the brackets as well
+Oringinal file looks like this
+```
+6  gcrKeyPath: bmctl-workspace/.sa-keys/[PROJECT-ID]-anthos-baremetal-gcr.json
+7  sshPrivateKeyPath: /root/.ssh/id_rsa #<path to SSH private key, used for node access>
+8  gkeConnectAgentServiceAccountKeyPath: bmctl-workspace/.sa-keys/[PROJECT-ID]-anthos-baremetal-connect.json
+9  gkeConnectRegisterServiceAccountKeyPath: bmctl-workspace/.sa-keys/[PROJECT-ID]-anthos-baremetal-register.json
+10 cloudOperationsServiceAccountKeyPath: bmctl-workspace/.sa-keys/[PROJECT-ID]-anthos-baremetal-cloud-ops.json
+
+34     projectID: [PROJECT-ID]
+102    projectID: [PROJECT-ID]
+```
+
+Update line 34 
+
+Update 
 ### E. Create ABM Cluster
 
 1. Follow the steps below to create your ABM cluster
