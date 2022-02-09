@@ -474,6 +474,12 @@ export KUBECONFIG=/home/${GCE_CLUSTER_PATH}/bmctl-workspace/${CLUSTER_NAME}/${CL
 echo $KUBECONFIG
 ```
 
+Run the `setenv.sh` script
+
+```
+./setenv.sh
+```
+
 ### F: Login to Anthos console
 
 1. Now that Anthos is installed, you need to update your $PATH to specify the newly generated Kube Config file for the newly created ABM cluster. Execute these steps as both `non-root` and `root` users.
@@ -491,9 +497,11 @@ chmod +x login-token.sh
 ./login-token.sh
 ```
 
-3. Navigate to Anthos console, click the name of your server, on the right hand panel click Login, select the Bearer token option. Use the token above here and login to the cluster.
+3. Navigate to Anthos console, click the name of your server, on the right hand panel click Login, select the Bearer token option. Copy the token from the output from above and use that to login to the cluster.
 
-4. Setup stackdriver monitoring and logging for workloads, enable Prometheus metrics capture for apps
+After you enter the token, the cluster should show up as being healthy.
+
+4. Enable and setup stackdriver monitoring and logging for workloads, enable Prometheus metrics capture for apps
 
 ```
 kubectl patch stackdriver stackdriver --type=merge -p '{"spec":{"scalableMonitoring": false}}' -n kube-system
@@ -519,37 +527,37 @@ $ kubectl get po -n kube-system
 The output will look something similar
 
 ```
-NAME                                                        READY   STATUS        RESTARTS   AGE
-anet-operator-57cb7b979b-77qt7                              1/1     Running       0          33m
-anetd-bxv44                                                 1/1     Running       0          33m
-anthos-cluster-operator-776cbfb748-fgxws                    2/2     Running       0          32m
-anthos-multinet-controller-5c6bcb85d-d6r7x                  1/1     Running       0          32m
-cap-controller-manager-777fc99b75-vxg6l                     2/2     Running       0          32m
-clientconfig-operator-69c54567c-vtpfb                       1/1     Running       0          32m
-core-dns-autoscaler-cf765587-qg6kk                          1/1     Running       0          32m
-coredns-7969dcc8cb-gjshz                                    1/1     Running       0          31m
-csi-snapshot-controller-5556cbf9db-6gr9z                    1/1     Running       0          32m
-csi-snapshot-validation-79cf5bd895-jlq7s                    1/1     Running       0          32m
-etcd-abm-on-gce                                             1/1     Running       0          33m
-etcd-defrag-qtbs5                                           1/1     Running       0          32m
-haproxy-abm-on-gce                                          1/1     Running       1          33m
-keepalived-abm-on-gce                                       1/1     Running       1          33m
-kube-apiserver-abm-on-gce                                   1/1     Running       0          33m
-kube-control-plane-metrics-proxy-sfh7r                      1/1     Running       0          31m
-kube-controller-manager-abm-on-gce                          1/1     Running       0          33m
-kube-proxy-tdz7x                                            1/1     Running       0          33m
-kube-scheduler-abm-on-gce                                   1/1     Running       0          33m
-kube-state-metrics-67d8f6bb4-h9qxt                          1/1     Running       0          31m
-localpv-p7zlh                                               1/1     Running       0          32m
-metallb-controller-64d846c6d4-9xvwf                         1/1     Running       0          32m
-metallb-speaker-7g6z9                                       1/1     Running       0          32m
-metrics-server-65cdc7466f-lfl2t                             2/2     Running       0          31m
-metrics-server-operator-77669cd95b-tmllh                    1/1     Running       0          32m
-node-exporter-4svq2                                         1/1     Running       0          31m
-sp-anthos-static-provisioner-5d58d7bf9c-cc7dl               2/2     Running       0          32m
-stackdriver-log-forwarder-sgpp2                             1/1     Terminating   0          31m
-stackdriver-metadata-agent-cluster-level-59c566db8d-7j6zf   1/1     Running       0          41s
-stackdriver-operator-689f98bc98-6phjv                       1/1     Running       0          32m
-stackdriver-prometheus-app-0                                2/2     Running       0          41s
-stackdriver-prometheus-k8s-0                                2/2     Running       0          82s
+NAME                                                       READY   STATUS    RESTARTS   AGE
+anet-operator-57cb7b979b-pzlzg                             1/1     Running   0          11m
+anetd-vxqqr                                                1/1     Running   0          11m
+anthos-cluster-operator-776cbfb748-kxxsp                   2/2     Running   0          11m
+anthos-multinet-controller-5c6bcb85d-bbqgg                 1/1     Running   0          11m
+cap-controller-manager-777fc99b75-9njpt                    2/2     Running   0          11m
+clientconfig-operator-69c54567c-lztkg                      1/1     Running   0          11m
+core-dns-autoscaler-cf765587-6t94v                         1/1     Running   0          11m
+coredns-7969dcc8cb-lbfhr                                   1/1     Running   0          11m
+csi-snapshot-controller-5556cbf9db-l5w6v                   1/1     Running   0          11m
+csi-snapshot-validation-79cf5bd895-pl69g                   1/1     Running   0          11m
+etcd-abm-on-gce                                            1/1     Running   0          12m
+etcd-defrag-m26hh                                          1/1     Running   0          11m
+haproxy-abm-on-gce                                         1/1     Running   1          12m
+keepalived-abm-on-gce                                      1/1     Running   1          12m
+kube-apiserver-abm-on-gce                                  1/1     Running   0          12m
+kube-control-plane-metrics-proxy-cnxpx                     1/1     Running   0          10m
+kube-controller-manager-abm-on-gce                         1/1     Running   0          12m
+kube-proxy-xslkq                                           1/1     Running   0          11m
+kube-scheduler-abm-on-gce                                  1/1     Running   0          12m
+kube-state-metrics-67d8f6bb4-tqs79                         1/1     Running   0          10m
+localpv-9xrbf                                              1/1     Running   0          11m
+metallb-controller-64d846c6d4-szv86                        1/1     Running   0          11m
+metallb-speaker-7q7mj                                      1/1     Running   0          11m
+metrics-server-65cdc7466f-lmm69                            2/2     Running   0          10m
+metrics-server-operator-77669cd95b-kqsfm                   1/1     Running   0          11m
+node-exporter-jzqd8                                        1/1     Running   0          10m
+sp-anthos-static-provisioner-5d58d7bf9c-ldxzr              2/2     Running   0          11m
+stackdriver-log-forwarder-nxw49                            1/1     Running   0          17s
+stackdriver-metadata-agent-cluster-level-55897684b-ghvsk   1/1     Running   0          27s
+stackdriver-operator-689f98bc98-l658f                      1/1     Running   0          11m
+stackdriver-prometheus-app-0                               2/2     Running   0          27s
+stackdriver-prometheus-k8s-0                               2/2     Running   0          34s
 ```
