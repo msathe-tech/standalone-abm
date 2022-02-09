@@ -486,7 +486,7 @@ echo $KUBECONFIG
 Run the `setenv.sh` script
 
 ```
-./setenv.sh
+. ./setenv.sh
 ```
 
 ### F: Login to Anthos console
