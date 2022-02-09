@@ -435,7 +435,6 @@ sed -i 's/\[PROJECT-ID\]/helloworld-009/g' bmctl-workspace/$CLUSTER_NAME/$CLUSTE
 
 ```
 sudo bash
-cd ../..
 gcloud auth application-default login
 . ./standalone-abm/setenv.sh
 ./bmctl create cluster -c abm-cluster
