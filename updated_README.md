@@ -270,7 +270,7 @@ Output should look like something similar:
 rtt min/avg/max/mdev = 0.021/0.037/0.055/0.004 ms
 ```
 
-### A: Setup SSH Access for GCE default (non-root) user and enable passwordless SSH private access to your machine
+### A: Setup SSH Access for GCE NON-ROOT and ROOT users and enable passwordless SSH private access to your machine.
 
 1. Exit from `root` user
 ```
@@ -278,7 +278,7 @@ exit
 ```
 
 2. Generate RSA Keygen. Don't enter any passphrase (leave empty) and use the default file paths.
-Perform this setp for BOTH non-root AND root user.
+Perform this setp for NON-ROOT user.
 
 ```
 ssh-keygen 
@@ -286,7 +286,25 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ```
 
 Verify you can login without password, you can find the IP address and username from `setenv.sh` script from seciton III, step 5. 
+
 For instance, it should be like `ssh ubuntu_anjalikhatri_altostrat_co@10.128.0.2` for non-root user.
+
+```
+ssh [your-username]@[ip-address-of-your-machine] 
+exit 
+```
+
+3. Generate RSA Keygen. Don't enter any passphrase (leave empty) and use the default file paths.
+Perform this setp for ROOT user.
+
+```
+sudo bash
+ssh-keygen 
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+```
+
+Verify you can login without password, you can find the IP address and username from `setenv.sh` script from seciton III, step 5. 
+
 For instance, it should be like `ssh root@10.128.0.2` for root user.
 
 ```
