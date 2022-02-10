@@ -172,6 +172,29 @@ remote: Total 63 (delta 31), reused 26 (delta 6), pack-reused 0
 Unpacking objects: 100% (63/63), 18.80 KiB | 1013.00 KiB/s, done.
 ```
 
+## [OPTIONAL] verify the CPU supports harware virtualization
+
+1. If you wish to run legacy windows apps on the platform you will require KubeVirt which uses KVM to manage VMs on top of Kubernetes. Ensure you have ability to run KVM. Following command checks if the CPU supports harware virtualization. If following command output it 0 it means the CPU doesn't support hardware virtualization. Which means you can run KubeVirt VMs on the ABM. 
+
+```
+grep -Eoc '(vmx|svm)' /proc/cpuinfo
+```
+
+2. Check if your system can run hardware-accelerated KVM virtual machines. 
+
+```
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt install cpu-checker -y
+kvm-ok
+```
+
+3. Validate the processor virtualization capability is not disabled in the BIOS. The output should be like following. 
+
+```
+INFO: /dev/kvm exists
+KVM acceleration can be used
+```
+
 ## III: Continue the configuration of the GCE instance to prep for ABM Install
 
 1. Setup the GCE environment and install the necessary updates and jq binaries
@@ -569,4 +592,168 @@ stackdriver-metadata-agent-cluster-level-55897684b-ghvsk   1/1     Running   0  
 stackdriver-operator-689f98bc98-l658f                      1/1     Running   0          11m
 stackdriver-prometheus-app-0                               2/2     Running   0          27s
 stackdriver-prometheus-k8s-0                               2/2     Running   0          34s
+```
+
+# Congratulations, you've successfully installed ABM on a single node GCE instance in your GCP project.
+
+# Optional 
+
+## Longhorn for CSI storage layer
+```
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.1.2/deploy/longhorn.yaml
+kubectl get pods --namespace longhorn-system --watch
+kubectl -n longhorn-system get pod
+```
+Verify Longhorn is listed as a storageclass and make it a default storageclass
+```
+kubectl get sc
+kubectl patch storageclass longhorn -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+kubectl get sc
+```
+### Setup UI console for Longhorn
+```
+USER=<USERNAME_HERE>; PASSWORD=<PASSWORD_HERE>; echo "${USER}:$(openssl passwd -stdin -apr1 <<< ${PASSWORD})" >> auth
+kubectl -n longhorn-system create secret generic basic-auth --from-file=auth
+kubectl get svc -n longhorn-system
+```
+As you can see the longhorn-frontend service is not exposed outside the cluster. You can use service type LoadBalancer. 
+Since we are using VXLAN the ABM will allocate external IP from the range we provided in the cluster configuration file which is a range of VXLAN IPs. 
+```
+kubectl edit svc longhorn-frontend -n longhorn-system # Change spec.type from ClusterIP to LoadBalancer
+kubectl get svc -n longhorn-system 
+```
+# Optional - if you want to run Windows VM on ABM
+
+## Enable KubeVirt on the cluster
+```
+kubectl --kubeconfig bmctl-workspace/CLUSTER_NAME/CLUSTER_NAME-kubeconfig get pods -n kubevirt
+```
+Add following section if you- 
+```
+spec:
+  anthosBareMetalVersion: 1.8.3
+  kubevirt:
+    useEmulation: true
+  bypassPreflightCheck: false
+```
+Or following if your hardware permits. If you set **useEmulation: false** and your hardware doesn't support then pre-flight check will fail during cluster creation. 
+```
+spec:
+  anthosBareMetalVersion: 1.8.3
+  kubevirt:
+    useEmulation: false
+  bypassPreflightCheck: false
+```
+## Download and save ISO image
+Download the Windows 2010 image from [here](https://www.microsoft.com/en-us/software-download/windows10ISO). 
+Upload the image to a GCS bucket so that you can download it on any machine later.
+```
+gsutil cp [/path/to]/Win10_21H1_English_x64.iso gs://[your gcs bucket]
+```
+
+And then download the ISO image on the machine you want to run the kubectl. 
+```
+gsutil cp gs://[your gcs bucket]/Win10_21H1_English_x64.iso .
+```
+
+**Note** if you have the GCS bucket in another project that you've access to then you can use 
+```
+gcloud auth login
+gcloud config set project[project-where-gcs-bucket-has-windows-image]
+gsutil cp gs://[your gcs bucket]/Win10_21H1_English_x64.iso .
+gcloud config set project[project-where-your-GCE-for-ABM-is-running]
+```
+
+## Setup Windows VM
+Install virtctl
+```
+sudo -E ./bmctl install virtctl
+kubectl plugin list
+```
+Take the IP of cdi-uploadproxy. 
+```
+kubectl get svc -n cdi
+```
+
+Upload the ISO image. 
+```
+kubectl get sc
+
+kubectl virt image-upload \
+--image-path=/home/madhavhsathe/Win10_21H1_English_x64.iso \
+--pvc-name=windows-iso-pvc \
+--access-mode=ReadWriteOnce \
+--pvc-size=10G \
+--uploadproxy-url=https://10.200.0.70:443 \
+--insecure  \
+--wait-secs=240 \
+--storage-class=longhorn
+
+kubectl get pvc
+
+```
+## Lauch the VM
+```
+cd kubevirt
+# Edit the PVC YAML to change the size of the main disk as per your machine size. 
+kubectl create -f windows-pvc.yaml 
+kubectl create -f windows-vm.yaml
+```
+Verify the PVC and VM are created
+```
+kubectl get pvc
+kubectl get vm
+kubectl get vmi
+```
+
+# Setup VNC to access UI console for the GCE instance
+You need a UI console to kickstart the Windows installation. 
+For that we are going to setup VNC on the machine. 
+You will be asked to set the password. Please note this password. 
+```
+cd vnc
+./setup-vnc.sh
+```
+Wait for all packages to be installed and VNC server to start.
+Verify that the VNC server has started.
+```
+ps aux | grep vnc
+```
+Now **copy script in xstartup.sh to $HOME/.vnc/xstartup**.
+And restart the VNC server.
+```
+vncserver -kill :1
+vncserver -geometry 1920x1080
+```
+Ensure you have the firewall on GCP to allow access to port 5901.
+```
+gcloud compute firewall-rules create vncserver --allow tcp:5901 --source-ranges 0.0.0.0/0
+```
+Launch your VNC client. You can download [Real VNC](https://www.realvnc.com/en/connect/download/viewer/) for your desktop. 
+Access the GCE instance using its [public IP]:5901.
+Access the VM you started earlier. 
+```
+kubectl get vm
+kubectl virt vnc [your-vm]
+```
+You will need to install the Windows operating system.
+
+# Take Backup on GCP
+Create a GCP bucket, enable Interoperability. 
+Remove the default key and create a new one.
+Set the project as default project for interoperable access.
+
+Create K8s secret using following command for the key you just added. 
+```
+export ACCESS_KEY=<<your access key>
+export SECRET= <<your secret>>
+export ENDPOINT=https://storage.googleapis.com
+```
+Create the secret in **longhorn-system** namespace so that Longhorn can access this bucket using the GCS endpoint and key. 
+```
+kubectl create secret generic gcp-storage-secret \
+    --from-literal=AWS_ACCESS_KEY_ID=${ACCESS_KEY} \
+    --from-literal=AWS_SECRET_ACCESS_KEY=${SECRET} \
+    --from-literal=AWS_ENDPOINTS=${ENDPOINT} \
+    -n longhorn-system
 ```
