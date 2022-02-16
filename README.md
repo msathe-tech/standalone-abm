@@ -433,13 +433,14 @@ $ ./bmctl create config -c $CLUSTER_NAME --enable-apis --create-service-accounts
 
 3. Use the following script `single-gce-abm-with-vxlan.yaml` as a reference to populate the ABM cluster configuration file.
 
-First, replace the placeholder "[PROJECT-ID]" with your project ID in the sample YAML. For example, my project ID is hellowrold-madhav. 
+First, replace the placeholder "[PROJECT-ID]" with your project ID in the sample YAML. For example, my project ID is hellowrold-madhav, so ***in the following command please replace "helloworld-madhav" with your project ID.*** 
 ```
 sed -i 's/\[PROJECT-ID\]/helloworld-madhav/g' standalone-abm/single-gce-abm-with-vxlan.yaml
 ```
 ***PAUSE, take a deep breath.***
 ***Please verify  ``` standalone-abm/single-gce-abm-with-vxlan.yaml ```, make sure the values and paths are accurate. You will waste too much time debugging issues later if this file has incorrect values.***
 ***Proceed only after verification***
+
 
 ```
 cp standalone-abm/single-gce-abm-with-vxlan.yaml bmctl-workspace/$CLUSTER_NAME/$CLUSTER_NAME.yaml
