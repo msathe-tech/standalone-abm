@@ -304,6 +304,9 @@ Perform this step for NON-ROOT user.
 
 ```
 ssh-keygen 
+```
+Authorize the passwordless ssh access.
+```
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ```
 
@@ -322,6 +325,9 @@ Perform this setp for ROOT user.
 ```
 sudo bash
 ssh-keygen 
+```
+Authorize the passwordless ssh access.
+```
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ```
 
