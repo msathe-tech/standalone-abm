@@ -4,7 +4,7 @@
 apt-get -qq update > /dev/null
 apt-get -qq install -y jq > /dev/null
 set -x
-export NETWORK_INTERFACE=eno1
+export NETWORK_INTERFACE=ens4
 ip link add vxlan0 type vxlan id 42 dev ${NETWORK_INTERFACE} dstport 0
 export CURRENT_IP=$(ip --json a show dev ${NETWORK_INTERFACE} | jq '.[0].addr_info[0].local' -r)
 
